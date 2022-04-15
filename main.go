@@ -1,5 +1,5 @@
 package main
 
 func main() {
-	new(FineSixSeven).Do()
+	new(FiveFourTwo).Do()
 }
