@@ -28,13 +28,74 @@ grid[i][j] 仅为0、1或2
 */
 package main
 
+import "fmt"
+
 type NineNineFour struct {
 }
 
 func (this *NineNineFour) Do() {
-
+	grid := [][]int{
+		{2},
+		{2},
+		{1},
+		{0},
+		{1},
+		{1}}
+	fmt.Println(this.orangesRotting(grid))
 }
 
 func (this *NineNineFour) orangesRotting(grid [][]int) int {
-	return grid[0][0]
+	if len(grid) == 0 || len(grid[0]) == 0 {
+		return -1
+	}
+	have, change, num, do, lengh, wide := 0, 0, 0, 0, len(grid), len(grid[0])
+	left, up, right, low := 0, 0, 0, 0
+	for {
+		do = 0
+		//fmt.Println("----------------------------------------")
+		for i := 0; i < lengh; i++ {
+			//fmt.Println(grid[i])
+
+			for j := 0; j < wide; j++ {
+				left, up, right, low = 0, 0, 0, 0
+				if grid[i][j] == 1 {
+					have = 1
+					change = 0
+					if i-1 >= 0 {
+						left = grid[i-1][j]
+					}
+					if i+1 < lengh {
+						right = grid[i+1][j]
+					}
+					if j-1 >= 0 {
+						up = grid[i][j-1]
+					}
+					if j+1 < wide {
+						low = grid[i][j+1]
+					}
+					if left+up+right+low == 0 {
+						return -1
+					}
+					//fmt.Printf("%v,%v的上下左右是%v,%v,%v,%v \n", i, j, up, low, left, right)
+					if left == 2 || up == 2 || right > 1 || low > 1 {
+						grid[i][j] = 3
+						do = 1
+						change = 1
+					}
+				} else if grid[i][j] == 3 {
+					grid[i][j] = 2
+				}
+			}
+		}
+		if do == 1 {
+			num++
+		} else {
+			break
+		}
+
+	}
+	if have > change {
+		num = -1
+	}
+	return num
 }
